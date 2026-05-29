@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad - Mi Dashboard del Mundial 2026</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: #f4f6fa;
+            color: #1f2937;
+            line-height: 1.6;
+            padding: 32px 16px;
+        }
+
+        .contenedor {
+            max-width: 860px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #047857 0%, #065f46 50%, #be123c 100%);
+            color: #fff;
+            padding: 32px;
+            position: relative;
+        }
+
+        header::before {
+            content: "⚽";
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 80px;
+            opacity: 0.18;
+        }
+
+        header .modulo {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.95;
+            margin-bottom: 8px;
+        }
+
+        header h1 { font-size: 30px; margin-bottom: 8px; }
+        header p { opacity: 0.95; }
+
+        main { padding: 32px; }
+        section { margin-bottom: 32px; }
+
+        h2 {
+            font-size: 22px;
+            color: #047857;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            color: #1f2937;
+        }
+
+        p, li { font-size: 15px; }
+        ol, ul { padding-left: 22px; margin-bottom: 10px; }
+        li { margin-bottom: 6px; }
+
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "SF Mono", Menlo, Consolas, monospace;
+            font-size: 13px;
+            color: #be185d;
+        }
+
+        .caja {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin: 16px 0;
+        }
+        .caja.info  { background: #dbeafe; border-left-color: #2563eb; }
+        .caja.exito { background: #d1fae5; border-left-color: #10b981; }
+        .caja.alerta { background: #fee2e2; border-left-color: #ef4444; }
+
+        .seccion-tarea {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            margin-top: 14px;
+        }
+
+        .seccion-tarea h3 {
+            color: #047857;
+            margin-top: 0;
+            font-size: 17px;
+        }
+
+        .badge-evento {
+            display: inline-block;
+            background: #047857;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-left: 6px;
+            text-transform: uppercase;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+        }
+        th { background: #f9fafb; font-weight: 600; }
+
+        .check { list-style: none; padding-left: 0; }
+        .check li::before {
+            content: "☐ ";
+            color: #047857;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+
+        footer {
+            background: #f9fafb;
+            padding: 20px 32px;
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* ====== Sección Entrega ====== */
+        .delivery {
+            background: linear-gradient(135deg, #f0fdf4 0%, #fef3c7 100%);
+            border: 1px solid #d1fae5;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 28px;
+        }
+
+        .delivery h2 {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 12px;
+            color: #047857;
+        }
+
+        .delivery p { margin-bottom: 18px; }
+
+        .filename {
+            display: inline-block;
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: "SF Mono", Menlo, Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .btn-upload {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: #fff;
+            color: #1f2937;
+            text-decoration: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            border: 1px solid #d1fae5;
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.08);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+        }
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(4, 120, 87, 0.18);
+            border-color: #047857;
+        }
+
+        .icon-folder { font-size: 28px; line-height: 1; }
+
+        .btn-upload-stack {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.3;
+        }
+        .btn-upload-stack small {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #047857;
+            text-transform: uppercase;
+        }
+        .btn-upload-stack > span {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .arrow {
+            display: inline-block;
+            margin-left: 4px;
+            color: #047857;
+            transition: transform 0.15s ease;
+        }
+        .btn-upload:hover .arrow { transform: translate(2px, -2px); }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <header>
+            <div class="modulo">Módulo 2 · Lección 06 · Parte 2</div>
+            <h1>⚽ Mi Dashboard del Mundial 2026</h1>
+            <p>Aplica jQuery, eventos y manipulación del DOM construyendo tu propio panel mundialero.</p>
+        </header>
+
+        <main>
+
+            <section>
+                <h2>🎯 Objetivo de la actividad</h2>
+                <p>
+                    Construir una <strong>mini-aplicación web</strong> con temática del
+                    <strong>Mundial 2026</strong> donde un fanático pueda crear su perfil,
+                    calcular puntos en la fase de grupos, predecir el resultado de un partido
+                    y cambiar el tema visual de la página.
+                </p>
+                <p>
+                    Toda la lógica debe estar hecha con <strong>jQuery</strong>, aplicando los
+                    eventos vistos en clase (<code>click</code>, <code>change</code>,
+                    <code>keyup</code>, <code>hover</code>, <code>focus</code>, <code>blur</code>)
+                    y la manipulación del DOM con <code>.val()</code>, <code>.text()</code>,
+                    <code>.html()</code>, <code>.css()</code> y <code>.toggleClass()</code>.
+                </p>
+            </section>
+
+            <section>
+                <h2>🗂️ Estructura del proyecto</h2>
+                <pre style="background:#1f2937;color:#f9fafb;padding:14px;border-radius:8px;font-size:13px;overflow-x:auto;">
+mundial-2026/
+├── index.html       ← estructura HTML
+├── estilos.css      ← estilos del dashboard
+└── app.js           ← toda la lógica con jQuery</pre>
+                <p>Recuerda incluir jQuery desde el CDN antes de tu <code>app.js</code>:</p>
+                <pre style="background:#1f2937;color:#f9fafb;padding:14px;border-radius:8px;font-size:13px;overflow-x:auto;">
+&lt;script src="https://code.jquery.com/jquery-3.7.1.min.js"&gt;&lt;/script&gt;
+&lt;script src="app.js"&gt;&lt;/script&gt;</pre>
+            </section>
+
+            <section>
+                <h2>🧩 Lo que debe tener tu dashboard</h2>
+                <p>Tu página debe tener un título principal y <strong>cuatro secciones</strong>, cada una con su propia funcionalidad. Las describimos a continuación.</p>
+            </section>
+
+            <!-- ========= TAREA 1 ========= -->
+            <section class="seccion-tarea">
+                <h3>1️⃣ Perfil del hincha <span class="badge-evento">keyup · change · click</span></h3>
+                <p>
+                    Una mini ficha donde el usuario ingresa su nombre y elige su selección favorita.
+                </p>
+                <strong>Elementos HTML:</strong>
+                <ul>
+                    <li>Un <code>&lt;input type="text"&gt;</code> para el nombre del hincha.</li>
+                    <li>Un <code>&lt;select&gt;</code> con al menos <strong>6 selecciones</strong> (por ejemplo: 🇦🇷 Argentina, 🇧🇷 Brasil, 🇨🇱 Chile, 🇺🇾 Uruguay, 🇫🇷 Francia, 🇪🇸 España).</li>
+                    <li>Un botón "Crear mi perfil".</li>
+                    <li>Un <code>&lt;div&gt;</code> donde se mostrará el resultado.</li>
+                </ul>
+                <strong>Comportamiento esperado:</strong>
+                <ul>
+                    <li>Mientras el usuario <strong>escribe su nombre</strong>, debe aparecer un mensaje en vivo arriba del input que diga: <em>"Hola, [nombre]..."</em> (usa el evento adecuado para detectar la escritura).</li>
+                    <li>Cuando cambie la selección en el <code>&lt;select&gt;</code>, debe aparecer (o cambiar) el texto: <em>"Tu equipo: [equipo elegido]"</em>.</li>
+                    <li>Al hacer click en "Crear mi perfil", se debe armar una <strong>tarjeta dentro del div de resultado</strong> con el nombre, el equipo elegido y el mensaje <em>"¡Vamos [equipo]! 🏆"</em>.</li>
+                    <li>Si el nombre está vacío o no se eligió equipo, mostrar un mensaje de error en rojo.</li>
+                </ul>
+            </section>
+
+            <!-- ========= TAREA 2 ========= -->
+            <section class="seccion-tarea">
+                <h3>2️⃣ Calculadora de puntos en la fase de grupos <span class="badge-evento">click · focus · blur</span></h3>
+                <p>
+                    Una pequeña calculadora que recibe cuántos partidos ganó, empató y perdió un equipo en la fase de grupos, y devuelve los puntos totales.
+                </p>
+                <strong>Recuerda:</strong> Victoria = 3 puntos · Empate = 1 punto · Derrota = 0 puntos.
+                <br><br>
+                <strong>Elementos HTML:</strong>
+                <ul>
+                    <li>Tres <code>&lt;input type="text"&gt;</code>: partidos ganados (PG), empatados (PE) y perdidos (PP).</li>
+                    <li>Un botón "Calcular puntos".</li>
+                    <li>Un <code>&lt;span&gt;</code> o <code>&lt;div&gt;</code> donde se mostrará el total.</li>
+                </ul>
+                <strong>Comportamiento esperado:</strong>
+                <ul>
+                    <li>Al hacer click en "Calcular puntos", aplicar la fórmula <strong>(PG × 3) + (PE × 1)</strong> y mostrar el resultado: <em>"Tu equipo tiene X puntos"</em>.</li>
+                    <li>Cuando un input <strong>recibe el foco</strong>, debe cambiar su borde a azul.</li>
+                    <li>Cuando un input <strong>pierde el foco</strong>, debe volver al borde original.</li>
+                    <li>Si la suma de PG + PE + PP es mayor a 3, mostrar un mensaje: <em>"⚠️ En la fase de grupos solo se juegan 3 partidos"</em>.</li>
+                    <li>Si el equipo tiene <strong>7 o más puntos</strong>, agregar el texto <em>"¡Clasificado a octavos! 🎉"</em> y pintar el resultado en verde.</li>
+                </ul>
+            </section>
+
+            <!-- ========= TAREA 3 ========= -->
+            <section class="seccion-tarea">
+                <h3>3️⃣ Predictor de partido <span class="badge-evento">change · click · hover</span></h3>
+                <p>
+                    El usuario elige dos selecciones y predice el marcador. La app le dice quién gana.
+                </p>
+                <strong>Elementos HTML:</strong>
+                <ul>
+                    <li>Dos <code>&lt;select&gt;</code> (equipo local y equipo visitante) con los mismos 6 equipos del punto 1.</li>
+                    <li>Dos <code>&lt;input type="text"&gt;</code> para los goles de cada equipo.</li>
+                    <li>Un botón "Predecir resultado".</li>
+                    <li>Un <code>&lt;div&gt;</code> donde se mostrará la predicción.</li>
+                </ul>
+                <strong>Comportamiento esperado:</strong>
+                <ul>
+                    <li>Cuando el usuario pase el mouse <strong>sobre el botón</strong>, debe cambiar el color del botón (ej: verde más oscuro). Al sacar el mouse, debe volver al color original.</li>
+                    <li>Al cambiar cualquiera de los dos <code>&lt;select&gt;</code>, mostrar en un <code>&lt;p&gt;</code> arriba: <em>"Partido: [Local] vs [Visitante]"</em>.</li>
+                    <li>Al hacer click en "Predecir resultado", mostrar dentro del div:
+                        <ul>
+                            <li>El marcador final: <em>"[Local] 2 - 1 [Visitante]"</em>.</li>
+                            <li>Quién gana, o si fue empate.</li>
+                        </ul>
+                    </li>
+                    <li>Si los dos equipos elegidos son iguales, mostrar el mensaje: <em>"❌ Un equipo no puede jugar contra sí mismo"</em>.</li>
+                </ul>
+                <div class="caja alerta">
+                    <strong>Importante:</strong> el <code>value</code> del <code>&lt;option&gt;</code> debe ser el nombre del equipo (no un número). Así puedes leerlo con <code>.val()</code> y mostrarlo directamente.
+                </div>
+            </section>
+
+            <!-- ========= TAREA 4 ========= -->
+            <section class="seccion-tarea">
+                <h3>4️⃣ Cambio de tema "Estadio" <span class="badge-evento">click · toggleClass</span></h3>
+                <p>
+                    Un botón que cambia toda la página entre dos modos visuales: <strong>"Estadio diurno"</strong> y <strong>"Estadio nocturno"</strong>.
+                </p>
+                <strong>Elementos HTML:</strong>
+                <ul>
+                    <li>Un botón con el texto inicial <em>"🌙 Modo nocturno"</em>.</li>
+                </ul>
+                <strong>Comportamiento esperado:</strong>
+                <ul>
+                    <li>Al hacer click, se debe agregar (o quitar) la clase <code>nocturno</code> al <code>&lt;body&gt;</code>.</li>
+                    <li>En el CSS, define la clase <code>.nocturno</code> con un fondo oscuro y texto claro.</li>
+                    <li>El texto del botón debe cambiar entre <em>"🌙 Modo nocturno"</em> y <em>"☀️ Modo diurno"</em> según el estado.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>🛠️ Eventos y métodos jQuery que vas a necesitar</h2>
+                <p>Todos estos los viste en clase. Esta tabla es solo para que los recuerdes:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Necesidad</th>
+                            <th>Método jQuery</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Esperar a que la página cargue</td><td><code>$(document).ready(...)</code></td></tr>
+                        <tr><td>Seleccionar un elemento</td><td><code>$("#id")</code></td></tr>
+                        <tr><td>Leer un input o select</td><td><code>.val()</code></td></tr>
+                        <tr><td>Cambiar texto</td><td><code>.text("...")</code></td></tr>
+                        <tr><td>Cambiar HTML</td><td><code>.html("...")</code></td></tr>
+                        <tr><td>Cambiar estilo</td><td><code>.css("propiedad", "valor")</code></td></tr>
+                        <tr><td>Agregar/quitar clases</td><td><code>.addClass()</code> · <code>.removeClass()</code> · <code>.toggleClass()</code></td></tr>
+                        <tr><td>Evento click</td><td><code>.click(function(){ ... })</code></td></tr>
+                        <tr><td>Evento al escribir</td><td><code>.keyup(function(){ ... })</code></td></tr>
+                        <tr><td>Evento al cambiar select</td><td><code>.change(function(){ ... })</code></td></tr>
+                        <tr><td>Evento al pasar el mouse</td><td><code>.hover(fnEntra, fnSale)</code></td></tr>
+                        <tr><td>Evento de foco / pérdida de foco</td><td><code>.focus(fn)</code> · <code>.blur(fn)</code></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>✅ Checklist antes de entregar</h2>
+                <ul class="check">
+                    <li>El archivo <code>index.html</code> tiene las 4 secciones bien identificadas.</li>
+                    <li>jQuery está cargado desde el CDN antes de tu archivo <code>app.js</code>.</li>
+                    <li>Todo el código JavaScript usa jQuery (no se usó <code>document.getElementById</code>).</li>
+                    <li>La sección 1 reacciona mientras escribes (sin necesidad de presionar el botón).</li>
+                    <li>La calculadora de puntos aplica la fórmula correcta y valida los 3 partidos.</li>
+                    <li>El predictor muestra el ganador o el empate.</li>
+                    <li>El cambio de tema funciona y el texto del botón se actualiza.</li>
+                    <li>La página tiene estilos propios (no se ve "pelada").</li>
+                    <li>El código está comentado explicando qué hace cada parte.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>🌟 Desafíos extra (opcionales)</h2>
+                <ol>
+                    <li>Que cuando el hincha presione <strong>Enter</strong> en el input del nombre, se cree el perfil automáticamente (sin tocar el botón).</li>
+                    <li>Agregar una <strong>animación</strong> con <code>.fadeIn()</code> al mostrar la tarjeta del perfil.</li>
+                    <li>En el predictor, mostrar un <strong>emoji 🏆</strong> al lado del ganador.</li>
+                    <li>Agregar un contador que muestre cuántas predicciones lleva hechas el usuario.</li>
+                    <li>Que al elegir un equipo en el perfil, el color de fondo de la tarjeta cambie al color del equipo (ej: 🇦🇷 → celeste).</li>
+                </ol>
+            </section>
+
+            <section class="delivery">
+                <h2>📦 Entrega</h2>
+                <p>
+                    Comprime tu carpeta <strong>mundial-2026</strong> (con los 3 archivos)
+                    en un único <span class="filename">apellido-nombre-M2L6-part2.zip</span>
+                    y súbelo a la carpeta compartida del curso en Google Drive.
+                </p>
+                <a class="btn-upload"
+                   href="https://drive.google.com/drive/folders/13t7DN08_TdxwqdR1xlOT2iKTKzzGiuh9?usp=sharing"
+                   target="_blank" rel="noopener">
+                    <span class="icon-folder">📂</span>
+                    <span class="btn-upload-stack">
+                        <small>SUBIR MI ACTIVIDAD</small>
+                        <span>Carpeta compartida en Google Drive <span class="arrow">↗</span></span>
+                    </span>
+                </a>
+            </section>
+
+        </main>
+
+        <footer>
+            Fundamentos de Desarrollo Front-End · Módulo 2 · Lección 06 · Parte 2 ⚽
+        </footer>
+
+    </div>
+
+</body>
+</html>
